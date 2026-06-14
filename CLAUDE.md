@@ -14,17 +14,20 @@ npm run preview  # preview production build
 
 ## Architecture
 
-This is a single-page React app (Vite + React 19) with no routing, no state management library, and no backend — all state lives in `src/App.jsx`.
+This is a single-page React app (Vite + React 19) with no routing, no state management library, and no backend.
 
-**`src/App.jsx`** — the entire application. Contains:
-- `transactions` state: array of `{ id, description, amount, type, category, date }`. Note: `amount` is stored as a string, which causes incorrect arithmetic in the summary totals (a known bug in the starter).
-- Form state (`description`, `amount`, `type`, `category`) for adding new transactions.
-- Filter state (`filterType`, `filterCategory`) applied client-side over the transactions array.
-- Summary totals (Income, Expenses, Balance) computed inline via `reduce`.
-- A single `handleSubmit` to append new transactions.
+**State ownership:**
+- `App.jsx` holds the single source of truth: the `transactions` array (`{ id, description, amount, type, category, date }`). Note: `amount` is stored as a string, which causes incorrect arithmetic in summary totals (a known bug in the starter).
+- Each child component owns its own local UI state.
 
-**`src/App.css`** — component-scoped styles. `.delete-btn` is defined but the delete button is not yet wired up in the JSX (intentional gap for the course).
+**Components:**
+- **`src/App.jsx`** — root component. Holds `transactions` state and a `handleAdd` callback, then composes the three child components.
+- **`src/Summary.jsx`** — receives `transactions`, computes `totalIncome`, `totalExpenses`, and `balance` internally via `reduce`, and renders the three summary cards.
+- **`src/TransactionForm.jsx`** — owns its own form state (`description`, `amount`, `type`, `category`). On submit, calls the `onAdd(transaction)` prop and resets its own state.
+- **`src/TransactionList.jsx`** — receives `transactions`, owns its own filter state (`filterType`, `filterCategory`), and renders the filtered table.
 
-**`src/index.css`** — global reset and base body styles.
+**Styles:**
+- **`src/App.css`** — all component styles. `.delete-btn` is defined but not yet wired up in the JSX (intentional gap for the course).
+- **`src/index.css`** — global reset and base body styles.
 
-There are no sub-components, no utility modules, no tests, and no environment variables.
+There are no utility modules, no tests, and no environment variables.
