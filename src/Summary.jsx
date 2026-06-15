@@ -8,19 +8,20 @@ function Summary({ transactions }) {
     .reduce((sum, t) => sum + t.amount, 0);
 
   const balance = totalIncome - totalExpenses;
+  const isNegative = balance < 0;
   return (
     <div className="summary">
-      <div className="summary-card">
+      <div className="summary-card income-card">
         <h3>Income</h3>
         <p className="income-amount">${totalIncome}</p>
       </div>
-      <div className="summary-card">
+      <div className="summary-card expense-card">
         <h3>Expenses</h3>
         <p className="expense-amount">${totalExpenses}</p>
       </div>
-      <div className="summary-card">
+      <div className={`summary-card balance-card${isNegative ? ' negative' : ''}`}>
         <h3>Balance</h3>
-        <p className="balance-amount">${balance}</p>
+        <p className={`balance-amount${isNegative ? ' negative' : ''}`}>${balance}</p>
       </div>
     </div>
   );

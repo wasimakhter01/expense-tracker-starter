@@ -1,6 +1,6 @@
 import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#a855f7', '#f43f5e'];
+const COLORS = ['#4F46E5', '#059669', '#E11D48', '#F59E0B', '#06B6D4', '#8B5CF6'];
 
 function SpendingChart({ transactions }) {
   const data = transactions

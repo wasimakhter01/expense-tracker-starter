@@ -1,160 +1,297 @@
-.app {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+:root {
+  --bg: #EEF1F6;
+  --surface: #FFFFFF;
+  --surface-alt: #F7F9FC;
+  --border: #E1E7EF;
+  --text: #111827;
+  --text-muted: #6B7280;
+  --text-subtle: #9CA3AF;
+  --income: #059669;
+  --expense: #E11D48;
+  --accent: #4F46E5;
+  --accent-hover: #4338CA;
+  --shadow-sm: 0 1px 3px rgba(15,23,42,0.06), 0 1px 2px rgba(15,23,42,0.04);
+  --shadow-md: 0 4px 12px rgba(15,23,42,0.08), 0 2px 4px rgba(15,23,42,0.04);
+  --radius: 12px;
+  --radius-sm: 8px;
 }
 
-h1 {
-  margin-bottom: 4px;
+/* ── Layout ── */
+
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.app-header {
+  margin-bottom: 36px;
+}
+
+.app-header h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  line-height: 1.2;
 }
 
 .subtitle {
-  margin-bottom: 20px;
-  color: #666;
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 400;
 }
 
+/* ── Summary cards ── */
+
 .summary {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
 .summary-card {
-  flex: 1;
-  border: 1px solid #ddd;
-  padding: 14px;
-  background: #fff;
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 20px 20px 20px 22px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  border-left-width: 4px;
+  border-left-color: var(--border);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
+
+.summary-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.income-card  { border-left-color: var(--income);  }
+.expense-card { border-left-color: var(--expense); }
+.balance-card { border-left-color: var(--accent);  }
+.balance-card.negative { border-left-color: var(--expense); }
 
 .summary-card h3 {
-  font-size: 13px;
-  color: #888;
-  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
 }
 
-.income-amount {
-  color: green;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.expense-amount {
-  color: red;
-  font-size: 20px;
-  font-weight: bold;
-}
-
+.income-amount,
+.expense-amount,
 .balance-amount {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
 }
 
-.add-transaction {
-  border: 1px solid #ddd;
-  padding: 16px;
-  margin-bottom: 24px;
-  background: #fff;
+.income-amount  { color: var(--income);  }
+.expense-amount { color: var(--expense); }
+.balance-amount { color: var(--accent);  }
+.balance-amount.negative { color: var(--expense); }
+
+/* ── Section panels ── */
+
+.spending-chart,
+.add-transaction,
+.transactions {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+  margin-bottom: 20px;
 }
 
-.add-transaction h2 {
-  font-size: 16px;
-  margin-bottom: 12px;
+.spending-chart h2,
+.add-transaction h2,
+.transactions h2 {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  margin-bottom: 20px;
 }
+
+/* ── Form ── */
 
 form {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 form input,
 form select {
-  padding: 8px;
-  border: 1px solid #ccc;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
   font-size: 14px;
-}
-
-form input[type="text"] {
-  flex: 2;
-}
-
-form input[type="number"] {
-  flex: 1;
+  color: var(--text);
+  background: var(--surface);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 form select {
-  flex: 1;
+  padding-right: 30px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
 }
+
+form input:focus,
+form select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+form input[type="text"]   { flex: 2; min-width: 140px; }
+form input[type="number"] { flex: 1; min-width: 80px;  }
+form select               { flex: 1; min-width: 110px; }
 
 form button {
-  padding: 8px 20px;
-  background: #333;
+  height: 40px;
+  padding: 0 22px;
+  background: var(--accent);
   color: #fff;
   border: none;
-  cursor: pointer;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
   font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, transform 0.1s ease;
 }
 
-.transactions {
-  margin-bottom: 24px;
-}
+form button:hover  { background: var(--accent-hover); }
+form button:active { transform: scale(0.97); }
 
-.transactions h2 {
-  font-size: 16px;
-  margin-bottom: 12px;
-}
+/* ── Filters ── */
 
 .filters {
   display: flex;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .filters select {
-  padding: 6px;
-  border: 1px solid #ccc;
+  height: 34px;
+  padding: 0 28px 0 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
   font-size: 13px;
+  color: var(--text);
+  background: var(--surface-alt);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
 }
+
+.filters select:focus { border-color: var(--accent); }
+
+/* ── Table ── */
 
 table {
   width: 100%;
   border-collapse: collapse;
 }
 
-thead {
-  background: #f5f5f5;
-}
-
-th, td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  font-size: 14px;
+thead tr {
+  border-bottom: 2px solid var(--border);
 }
 
 th {
-  font-size: 12px;
-  color: #888;
+  padding: 0 12px 10px 12px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  color: var(--text-subtle);
 }
 
-.spending-chart {
-  border: 1px solid #ddd;
-  padding: 16px;
-  margin-bottom: 24px;
-  background: #fff;
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s ease;
 }
 
-.spending-chart h2 {
-  font-size: 16px;
-  margin-bottom: 12px;
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--surface-alt); }
+
+td {
+  padding: 12px;
+  font-size: 14px;
+  color: var(--text);
 }
+
+td:nth-child(1) {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+td:nth-child(3) {
+  color: var(--text-muted);
+  font-size: 13px;
+  text-transform: capitalize;
+}
+
+td.income-amount,
+td.expense-amount {
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Delete button ── */
 
 .delete-btn {
-  padding: 4px 10px;
-  background: #eee;
-  border: 1px solid #ccc;
-  cursor: pointer;
+  padding: 5px 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
   font-size: 12px;
-  color: #333;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.delete-btn:hover {
+  border-color: var(--expense);
+  color: var(--expense);
+  background: #FFF1F3;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 640px) {
+  .app { padding: 24px 16px; }
+  .summary { grid-template-columns: 1fr; }
+  form { flex-direction: column; }
+  form input,
+  form select,
+  form button { width: 100%; }
 }
