@@ -7,11 +7,20 @@ function TransactionForm({ onAdd }) {
   const [amount, setAmount] = useState("");
   const [type, setType] = useState("expense");
   const [category, setCategory] = useState("food");
+  const [errors, setErrors] = useState({ description: "", amount: "" });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const parsedAmount = parseFloat(amount);
-    if (!description || isNaN(parsedAmount) || parsedAmount <= 0) return;
+    const newErrors = { description: "", amount: "" };
+
+    if (!description.trim()) newErrors.description = "Description is required";
+    if (isNaN(parsedAmount) || parsedAmount <= 0) newErrors.amount = "Enter a valid amount greater than 0";
+
+    if (newErrors.description || newErrors.amount) {
+      setErrors(newErrors);
+      return;
+    }
 
     onAdd({
       id: Date.now(),
@@ -26,23 +35,33 @@ function TransactionForm({ onAdd }) {
     setAmount("");
     setType("expense");
     setCategory("food");
+    setErrors({ description: "", amount: "" });
   };
+
+  const errorList = [errors.description, errors.amount].filter(Boolean);
 
   return (
     <div className="add-transaction">
       <h2>Add Transaction</h2>
+      {errorList.length > 0 && (
+        <div className="validation-box">
+          {errorList.map((msg) => <p key={msg}>{msg}</p>)}
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Description"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          className={errors.description ? "input-error" : ""}
+          onChange={(e) => { setDescription(e.target.value); setErrors(prev => ({ ...prev, description: "" })); }}
         />
         <input
           type="number"
           placeholder="Amount"
           value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          className={errors.amount ? "input-error" : ""}
+          onChange={(e) => { setAmount(e.target.value); setErrors(prev => ({ ...prev, amount: "" })); }}
         />
         <select value={type} onChange={(e) => setType(e.target.value)}>
           <option value="income">Income</option>
